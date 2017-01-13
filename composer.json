@@ -1,4 +1,4 @@
-{ "name": "dbeurive/slim",
+{ "name": "dbeurive/slim-controller",
   "version": "1.0.0",
   "description": "This package contains a controller manager for the SLIM framework",
   "license": "Creative Commons Attribution 4.0 International Public License",
