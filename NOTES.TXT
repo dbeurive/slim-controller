@@ -1,0 +1,12 @@
+Using the artifact
+
+The artifacts are stored under the directory "/path/to/the/artifacts".
+
+Add these lines in the file "composer.json":
+
+    "repositories": [
+        {
+            "type": "artifact",
+            "url": "/path/to/the/artifacts"
+        }
+    ],
