@@ -1,13 +1,13 @@
 <?php
 
-namespace dbeurive\Slim\Test\controller;
+namespace dbeurive\Slim\Test\controller0;
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 use dbeurive\Slim\controller\Controller;
 
 /**
  * Class UserController
- * @package dbeurive\Slim\Test\controller
+ * @package dbeurive\Slim\Test\controller0
  */
 class UserController extends Controller
 {
@@ -21,7 +21,7 @@ class UserController extends Controller
         $data = $request->getParsedBody();
         $firstName = filter_var($data['firstname'], FILTER_SANITIZE_STRING);
         $lastName  = filter_var($data['lastname'], FILTER_SANITIZE_STRING);
-        $response->getBody()->write("Hello, $firstName $lastName");
+        $response->getBody()->write("Hello, $firstName $lastName (" . $this->app->getContainer()[FLAG] . ')');
         return $response;
     }
 
@@ -33,7 +33,7 @@ class UserController extends Controller
      * @uri-params {id}
      */
     public function actionGetGet(Request $request, Response $response) {
-        $response->getBody()->write("This is the requested user data.");
+        $response->getBody()->write("This is the requested user data (" . $this->app->getContainer()[FLAG] . ')');
         return $response;
     }
 }

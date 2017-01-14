@@ -7,7 +7,7 @@ class ExplorerTest extends \PHPUnit_Framework_TestCase
     const NUMBER_OF_CONTROLLERS = 2;
 
     public function testExplore() {
-        $explorer = new Explorer(__DIR__ . DIRECTORY_SEPARATOR . 'www' . DIRECTORY_SEPARATOR . 'controller', 'Controller.php');
+        $explorer = new Explorer(__DIR__ . DIRECTORY_SEPARATOR . 'www' . DIRECTORY_SEPARATOR . 'controller0', 'Controller.php');
         $data = $explorer->explore();
 
         $this->assertInternalType('array', $data);

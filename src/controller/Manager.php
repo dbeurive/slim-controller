@@ -30,6 +30,9 @@ class Manager
     /** @var \Slim\App */
     static private $__app;
 
+    /** @var null|string This property is used when requesting without a WEB server. */
+    static public $REQUEST_URI = null;
+
     /**
      * Initialize the manager.
      *
@@ -62,28 +65,36 @@ class Manager
                 self::__registerControllerActions(array(self::KEY_CONTROLLER => $_controllerData, self::KEY_URI_PREFIX => $_controllerPrefix));
             }
         } else {
-            // Register only the routes that apply to the controller being executed.
-            self::$__app->add(function (Request $request, Response $response, $next) use ($index) {
-                $controller = Manager::__findController($request, $index);
-                self::__registerControllerActions($controller);
-                $response = $next($request, $response);
-                return $response;
-            });
+            // Register only the routes that apply to the controller that will be executed.
+
+            $requestUri = null;
+            if (array_key_exists('REQUEST_URI', $_SERVER)) {
+                // Run within a WEB environment.
+                $requestUri = $_SERVER['REQUEST_URI'];
+            } else {
+                // Run within a "non WEB" environment (probably UNIT tests).
+                if (is_null(self::$REQUEST_URI)) {
+                    throw new \Exception("The controller manager is used without a WEB server. You should used the property " . __CLASS__ . '::$REQUEST_URI to set the request URI.');
+                }
+                $requestUri = self::$REQUEST_URI;
+            }
+
+            $controller = Manager::__findController($requestUri, $index);
+            self::__registerControllerActions($controller);
         }
     }
 
     /**
-     * Given the current request, find the controller configuration that applies.
+     * Given the current server URI, find the controller configuration that applies.
      *
-     * @param Request $request The request.
+     * @param string $inServerUri The server URI.
      * @param array $inIndex Index.
      * @return array The method returns an array that contains the following keys:
      *         - Manager::KEY_CONTROLLER: the controller's configuration.
      *         - Manager::KEY_URI_PREFIX: the URI prefix associated with the controller.
      * @throws \Exception
      */
-    static private function __findController(Request $request, array $inIndex) {
-        $uriPath = $request->getUri()->getPath();
+    static private function __findController($inServerUri, array $inIndex) {
 
         /**
          * @var string $_uriPrefix Example: "/user/".
@@ -92,7 +103,7 @@ class Manager
         foreach ($inIndex as $_uriPrefix => $_controllerData) {
             $prefix = "/${_uriPrefix}/";
 
-            if (substr($uriPath . '/', 0, strlen($prefix)) === $prefix) {
+            if (substr($inServerUri . '/', 0, strlen($prefix)) === $prefix) {
                 return array(
                     self::KEY_CONTROLLER => $_controllerData,
                     self::KEY_URI_PREFIX => $_uriPrefix
@@ -114,6 +125,7 @@ class Manager
      * @see Indexer for a description of the controller's data.
      */
     static private function __registerControllerActions(array $inControllerConfiguration) {
+
         $uriPrefix = $inControllerConfiguration[self::KEY_URI_PREFIX];
         $class = $inControllerConfiguration[self::KEY_CONTROLLER][Indexer::KEY_CONTROLLER][Indexer::KEY_CONTROLLER_CLASS];
         $controller = new $class(self::$__app);

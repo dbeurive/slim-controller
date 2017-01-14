@@ -48,7 +48,7 @@ EOS;
 $baseWww = implode(DIRECTORY_SEPARATOR, array(__DIR__, '..', 'www'));
 
 $hosts = array(
-    'slim-controller.localhost' => $baseWww
+    'slim-controller0.localhost' => $baseWww
 );
 
 foreach ($hosts as $_host => $_dir) {

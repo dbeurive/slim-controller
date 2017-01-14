@@ -47,14 +47,13 @@ Activate the new configuration:
 
 Test your configuration: 
 
-    $ curl http://www.slim-controller.localhost/user/10
+    $ curl http://www.slim-controller.localhost/user/get/10
     
 You should get the string "`Hello, toto`".
 
 ## Testing the application
 
-| Route         | URL to use for test                  |
-|---------------|--------------------------------------|
-| /get/{name}   | http://www.slim.localhost/get/toto   |
-| /post         | http://www.slim.localhost/post       |
-| /jsonrpc      | http://www.slim.localhost/jsonrpc    |
+| Route         | URL to use for test                                 |
+|---------------|-----------------------------------------------------|
+| /get/{id}     | http://www.slim-controller.localhost/user/get/10    |
+| /get/{id}     | http://www.slim-controller.localhost/profile/get/10 |

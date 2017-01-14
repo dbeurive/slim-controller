@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This file implements the controller indexer.
+ * This file implements the controller0 indexer.
  */
 
 namespace dbeurive\Slim\bin\application;
@@ -17,7 +17,7 @@ use dbeurive\Slim\controller\Indexer as CtrlIndexer;
 /**
  * Class Indexer
  *
- * This class implements the controller indexer.
+ * This class implements the controller0 indexer.
  *
  * @package dbeurive\Slim\bin\application
  */
@@ -52,7 +52,7 @@ class Indexer extends Command
     const KEY_ACTION_URI = 'action-uri';
     /**
      * This key is used within the generated index.
-     * It identifies the controller class.
+     * It identifies the controller0 class.
      */
     const KEY_CONTROLLER_CLASS = 'class';
     /**
@@ -62,7 +62,7 @@ class Indexer extends Command
     const KEY_METHOD = 'method';
     /**
      * This key is used within the generated index.
-     * It identifies the path to the file that implements the controller.
+     * It identifies the path to the file that implements the controller0.
      */
     const KEY_CONTROLLER_PATH = 'path';
 

@@ -4,9 +4,9 @@
  *
  * Examples:
  *
- *      php slim-controller.php index ../tests/www/
+ *      php slim-controller0.php index ../tests/www/
  *
- *      php slim-controller.php dump --host http://domain.com index.json
+ *      php slim-controller0.php dump --host http://domain.com index.json
  *
  */
 

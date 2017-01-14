@@ -1,5 +1,5 @@
 { "name": "dbeurive/slim-controller",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "This package contains a controller manager for the SLIM framework",
   "license": "Creative Commons Attribution 4.0 International Public License",
   "autoload": {
@@ -10,7 +10,7 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "dbeurive\\Slim\\Test\\controller\\": "tests/www/controller"
+      "dbeurive\\Slim\\Test\\controller0\\": "tests/www/controller0"
     }
   },
   "require": {
