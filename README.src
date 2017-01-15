@@ -56,6 +56,8 @@ class ProfileController extends Controller
 
 > Please note the names of the methods that implement the controllers' actions ("actionPostSet" and "actionGetGet").
 > Actions' names start with the prefix  "`action`", followed by the name of the expected HTTP method (see the [Slim's documentation](https://www.slimframework.com/docs/objects/router.html)).
+>
+> Please note the annotation "`@uri-params {id}`" (for the method "`actionGetGet()`"). This means that the URI associated with this action is "`/profile/get/{id}`".
 
 ## Create the index that lists all controllers
 
