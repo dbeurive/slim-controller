@@ -1,3 +1,10 @@
+- [Introduction](#a0)
+- [Synopsis](#a1)
+  * [Define the controllers](#a2)
+  * [Create the index that lists all controllers](#a3)
+  * [Implement the Slim application](#a4)
+
+
 # <a name="a0"></a>Introduction
 
 This package allows the use of "controllers" with the [Slim framework](https://www.slimframework.com/).
@@ -71,6 +78,22 @@ php slim-controller.php index --index-path /app/data/index.json /path/to/control
 >
 > Please click here to see the script [slim-controller.php](bin/slim-controller.php).
 
+You can dump the content of the index in a human readable way:
+
+    $ php slim-controller.php dump --host http://www.slim-controller.localhost /app/data/index.json
+    POST   http://www.slim-controller.localhost/profile/set
+           /path/to/controllers/ProfileController.php
+           \dbeurive\Slim\Test\controller0\ProfileController::actionPostSet
+    GET    http://www.slim-controller.localhost/profile/get/{id}
+           /path/to/controllers/ProfileController.php
+           \dbeurive\Slim\Test\controller0\ProfileController::actionGetGet
+    POST   http://www.slim-controller.localhost/user/login
+           /path/to/controllers/UserController.php
+           \dbeurive\Slim\Test\controller0\UserController::actionPostLogin
+    GET    http://www.slim-controller.localhost/user/get/{id}
+           /path/to/controllers/UserController.php
+           \dbeurive\Slim\Test\controller0\UserController::actionGetGet
+
 ## <a name="a4"></a>Implement the Slim application
 
 ```php
@@ -89,5 +112,4 @@ $app->run();
 > To do that, we should have written: `ControllerManager::start($app, '/app/data/index.json', true);`
 >
 > Please, click [here](tests/www/index.php) to see the real example.
-
 
