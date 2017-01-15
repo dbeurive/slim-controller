@@ -58,6 +58,8 @@ class ProfileController extends Controller
 > Actions' names start with the prefix  "`action`", followed by the name of the expected HTTP method (see the [Slim's documentation](https://www.slimframework.com/docs/objects/router.html)).
 >
 > Please note the annotation "`@uri-params {id}`" (for the method "`actionGetGet()`"). This means that the URI associated with this action is "`/profile/get/{id}`".
+>
+> Please have a look to the controller [ProfileController.php](tests/www/controller0/ProfileController.php) and the controller [UserController.php](tests/www/controller0/UserController.php).
 
 ## <a name="a3"></a>Create the index that lists all controllers
 
@@ -66,6 +68,8 @@ php slim-controller.php index --index-path /app/data/index.json /path/to/control
 ```
 
 > The index "`/app/data/index.json`" contains data about the controllers. Please click [here](doc/index.md) to see the content of this file.
+>
+> Please click here to see the script [slim-controller.php](bin/slim-controller.php).
 
 ## <a name="a4"></a>Implement the Slim application
 
