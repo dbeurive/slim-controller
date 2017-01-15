@@ -71,7 +71,7 @@ php slim-controller.php index --index-path /app/data/index.json /path/to/control
 use dbeurive\Slim\controller\Manager as ControllerManager;
 
 $app = new \Slim\App([]);
-ControllerManager::start('/app/data/index.json');
+ControllerManager::start($app, '/app/data/index.json');
 $app->run();
 ```
 
@@ -80,7 +80,7 @@ $app->run();
 > The expected controller is "ProfileController".
 >
 > This behaviour can be modified. Indeed, it is possible to configure the controller manager so that it will systematically register all routes (from all controllers).
-> To do that, we should have written: `ControllerManager::start('/app/data/index.json', true);`
+> To do that, we should have written: `ControllerManager::start($app, '/app/data/index.json', true);`
 >
 > Please, click [here](tests/www/index.php) to see the real example.
 
