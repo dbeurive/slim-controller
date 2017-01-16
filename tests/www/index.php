@@ -28,24 +28,32 @@ function error_handler($errno, $errstr, $errfile, $errline)
 set_error_handler("error_handler");
 
 // ------------------------------------------------------------------
+// Check the environment.
+// ------------------------------------------------------------------
+
+checkIndex();
+
+// ------------------------------------------------------------------
 // Create the application.
 // ------------------------------------------------------------------
 
 $configuration = require __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'config.php';
 
-if (array_key_exists('REQUEST_URI', $_SERVER)) {
-    // Only executed while testing with a WEB browser.
-    $flag = getDeclareRoutesFlag();
-    $configuration[FLAG] = $flag ? "Declare all routes" : "Declare only the required routes";
-}
+$flag = getDeclareRoutesFlag();
+$configuration[FLAG] = $flag ? "Declare all routes" : "Declare only the required routes";
 
 $app = new \Slim\App($configuration);
-ControllerManager::start($app, __DIR__ . DIRECTORY_SEPARATOR . 'index.json', $flag);
+ControllerManager::start($app, __DIR__ . DIRECTORY_SEPARATOR . 'index0.json', $flag);
 $app->run();
 
 
 
-
+function checkIndex() {
+    $indexPath = __DIR__ . DIRECTORY_SEPARATOR . 'index0.json';
+    if (! file_exists($indexPath)) {
+        throw new \Exception("The index file \"$indexPath\" has not been created! Please create it first! You can run the unit tests to do that.");
+    }
+}
 
 function getDeclareRoutesFlag() {
     $flagFile = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'flag.txt';
