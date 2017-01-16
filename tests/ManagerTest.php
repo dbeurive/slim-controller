@@ -1,53 +1,153 @@
 <?php
 
 use dbeurive\Slim\controller\Manager as ControllerManager;
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Message\ResponseInterface as Response;
 use dbeurive\Slim\Requester;
-
 
 class ManagerTest extends \dbeurive\Slim\PHPUnit\TestCase
 {
-    /** @var /Slim/App */
-    private $__application;
-    /** @var bool */
-    private $__flag;
+    /** @var array */
+    private $__configuration;
 
     public function setUp() {
-        $this->__flag = $this->__getDeclareRoutesFlag();
-        $configuration = require __DIR__ . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'config.php';
-        $configuration[FLAG] = $this->__flag ? "Declare all routes" : "Declare only the required routes";
-        $this->__application = new \Slim\App($configuration);
+        $this->__configuration = require __DIR__ . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'config.php';
     }
 
-    public function testGet() {
+    public function _testGet() {
+
+        // The tests below may seem duplicated. They are not.
+        // - One test is executed with $flag = true.
+        // - One test is executed with $flag = false.
+        //
+        // Please note:
+        // Since unit tests bypass the WEB server, $_SERVER[SERVER_URI] is not SET.
+        // In the case where we ask the manager to declare only the required route ($flag = false), we need to tell it about the requested URI.
+
+        $flag = true; // Register ALL routes
+        $this->__configuration[FLAG] = "Declare all routes";
+
+        $application = new \Slim\App($this->__configuration);
+        ControllerManager::start($application, __DIR__ . DIRECTORY_SEPARATOR . 'www' . DIRECTORY_SEPARATOR . 'index0.json', $flag);
+        $requester = new Requester($application);
+        $text = $requester->get('/user/get/toto');
+        $this->assertStringStartsWith("This is the requested user data", $text);
+        $this->assertResponseIsOk($requester->getResponse());
+
+        // =============================================
+
+        $flag = false;
+        $this->__configuration[FLAG] = "Declare only the required routes";
+        $application = new \Slim\App($this->__configuration);
 
         ControllerManager::$REQUEST_URI = '/user/get/toto';
-        ControllerManager::start($this->__application, __DIR__ . DIRECTORY_SEPARATOR . 'www' . DIRECTORY_SEPARATOR . 'index.json', $this->__flag);
-        $requester = new Requester($this->__application);
+        ControllerManager::start($application, __DIR__ . DIRECTORY_SEPARATOR . 'www' . DIRECTORY_SEPARATOR . 'index0.json', $flag);
+        $requester = new Requester($application);
         $text = $requester->get('/user/get/toto');
+        $this->assertStringStartsWith("This is the requested user data", $text);
+        $this->assertResponseIsOk($requester->getResponse());
 
-        // TODO: Test the value of $test.
+        // =============================================
+
+        $flag = true;
+        $this->__configuration[FLAG] = "Declare all routes";
+        $application = new \Slim\App($this->__configuration);
+
+        ControllerManager::start($application, __DIR__ . DIRECTORY_SEPARATOR . 'www' . DIRECTORY_SEPARATOR . 'index0.json', $flag);
+        $requester = new Requester($application);
+        $text = $requester->get('/user/profile/10');
+        $this->assertStringStartsWith("This is the requested user data", $text);
+        $this->assertResponseIsOk($requester->getResponse());
+
+        // =============================================
+
+        $flag = false;
+        $this->__configuration[FLAG] = "Declare only the required routes";
+        $application = new \Slim\App($this->__configuration);
+
+        ControllerManager::$REQUEST_URI = '/user/profile/10';
+        ControllerManager::start($application, __DIR__ . DIRECTORY_SEPARATOR . 'www' . DIRECTORY_SEPARATOR . 'index0.json', $flag);
+        $requester = new Requester($application);
+        $text = $requester->get('/user/profile/10');
+        $this->assertStringStartsWith("This is the requested user data", $text);
+        $this->assertResponseIsOk($requester->getResponse());
     }
 
+    public function testPost() {
 
-    private function __getDeclareRoutesFlag() {
+        // The tests below may seem duplicated. They are not.
+        // - One test is executed with $flag = true.
+        // - One test is executed with $flag = false.
+        //
+        // Please note:
+        // Since unit tests bypass the WEB server, $_SERVER[SERVER_URI] is not SET.
+        // In the case where we ask the manager to declare only the required route ($flag = false), we need to tell it about the requested URI.
 
-        $flagFile = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'flag.txt';
-        if (file_exists($flagFile)) {
-            if (false === unlink($flagFile)) {
-                throw new \Exception("Can not delete the file $flagFile");
-            }
-        } else {
-            if (false === file_put_contents($flagFile, '1')) {
-                throw new \Exception("Can not create the file $flagFile");
-            }
-            if (false === chmod($flagFile, 0777)) {
-                throw new \Exception("Can not change mode for the file $flagFile");
-            }
-        }
-        return file_exists($flagFile);
+
+        $flag = true;
+        $this->__configuration[FLAG] = "Declare all routes";
+
+        $params = array(
+            'firstname' => 'Mickey',
+            'lastname' => 'Mouse'
+        );
+
+        $application = new \Slim\App($this->__configuration);
+        ControllerManager::start($application, __DIR__ . DIRECTORY_SEPARATOR . 'www' . DIRECTORY_SEPARATOR . 'index0.json', $flag);
+        $requester = new Requester($application);
+        $text = $requester->post('/user/login', $params);
+        $this->assertEquals("Hello, Mickey Mouse (Declare all routes)", $text);
+        $this->assertResponseIsOk($requester->getResponse());
+
+        // =============================================
+
+        $flag = false;
+        $this->__configuration[FLAG] = "Declare only the required routes";
+        $application = new \Slim\App($this->__configuration);
+
+        $params = array(
+            'firstname' => 'Mickey',
+            'lastname' => 'Mouse'
+        );
+
+        ControllerManager::$REQUEST_URI = '/user/login';
+        ControllerManager::start($application, __DIR__ . DIRECTORY_SEPARATOR . 'www' . DIRECTORY_SEPARATOR . 'index0.json', $flag);
+        $requester = new Requester($application);
+        $text = $requester->post('/user/login', $params);
+        $this->assertEquals("Hello, Mickey Mouse (Declare only the required routes)", $text);
+        $this->assertResponseIsOk($requester->getResponse());
+
+        // =============================================
+
+        $flag = true;
+        $this->__configuration[FLAG] = "Declare all routes";
+        $application = new \Slim\App($this->__configuration);
+
+        $params = array(
+            'firstname' => 'Mickey',
+            'lastname' => 'Mouse'
+        );
+
+        ControllerManager::start($application, __DIR__ . DIRECTORY_SEPARATOR . 'www' . DIRECTORY_SEPARATOR . 'index0.json', $flag);
+        $requester = new Requester($application);
+        $text = $requester->post('/profile/set', $params);
+        $this->assertEquals("Profile Mickey Mouse has been set! (Declare all routes)", $text);
+        $this->assertResponseIsOk($requester->getResponse());
+
+        // =============================================
+
+        $flag = false;
+        $this->__configuration[FLAG] = "Declare only the required routes";
+        $application = new \Slim\App($this->__configuration);
+
+        $params = array(
+            'firstname' => 'Mickey',
+            'lastname' => 'Mouse'
+        );
+
+        ControllerManager::$REQUEST_URI = '/profile/set';
+        ControllerManager::start($application, __DIR__ . DIRECTORY_SEPARATOR . 'www' . DIRECTORY_SEPARATOR . 'index0.json', $flag);
+        $requester = new Requester($application);
+        $text = $requester->post('/profile/set', $params);
+        $this->assertEquals("Profile Mickey Mouse has been set! (Declare only the required routes)", $text);
+        $this->assertResponseIsOk($requester->getResponse());
     }
-
-
 }

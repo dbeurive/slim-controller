@@ -92,6 +92,7 @@ You can dump the content of the index in a human readable way:
 ## Implement the Slim application
 
 ```php
+// You may need to include "autoload.php"
 use dbeurive\Slim\controller\Manager as ControllerManager;
 
 $app = new \Slim\App([]);

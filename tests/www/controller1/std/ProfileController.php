@@ -1,6 +1,6 @@
 <?php
 
-namespace dbeurive\Slim\Test\controller0;
+namespace dbeurive\Slim\Test\controller1;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use dbeurive\Slim\controller\Controller;

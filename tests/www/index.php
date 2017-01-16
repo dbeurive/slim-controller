@@ -31,15 +31,16 @@ set_error_handler("error_handler");
 // Create the application.
 // ------------------------------------------------------------------
 
-
-$flag = getDeclareRoutesFlag();
 $configuration = require __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'config.php';
-$configuration[FLAG] = $flag ? "Declare all routes" : "Declare only the required routes";
+
+if (array_key_exists('REQUEST_URI', $_SERVER)) {
+    // Only executed while testing with a WEB browser.
+    $flag = getDeclareRoutesFlag();
+    $configuration[FLAG] = $flag ? "Declare all routes" : "Declare only the required routes";
+}
 
 $app = new \Slim\App($configuration);
-
 ControllerManager::start($app, __DIR__ . DIRECTORY_SEPARATOR . 'index.json', $flag);
-
 $app->run();
 
 

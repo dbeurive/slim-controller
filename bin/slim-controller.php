@@ -22,3 +22,5 @@ $application->setAutoExit(true);
 $application->add(new AppIndexer());
 $application->add(new AppDumper());
 $application->run();
+
+exit(0);
