@@ -2,6 +2,11 @@
 
 /**
  * This file implements the WEB service's entry point.
+ *
+ * IMPORTANT NOTE:
+ *
+ * If the test fails, you should check the file "/tmp/flag.txt" (assuming that "/tmp" is the temporary directory for your environment).
+ * Make sure that the WEB server has the rights to modify it.
  */
 
 use dbeurive\Slim\controller\Manager as ControllerManager;
